@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"sync"
+	"time"
 )
 
 type Job struct {
@@ -63,9 +64,13 @@ func allocateJobs(numOfJobs int) {
 func main() {
 	numOfWorkers := 10
 	numOfJobs := 100
+	startTime := time.Now()
 	done := make(chan bool)
 	go createWorkerPool(numOfWorkers)
 	go allocateJobs(numOfJobs)
 	go getResults(done)
 	<-done
+	endTime := time.Now()
+	diff := endTime.Sub(startTime)
+        fmt.Println("total time taken ", diff.Seconds(), "seconds")
 }
